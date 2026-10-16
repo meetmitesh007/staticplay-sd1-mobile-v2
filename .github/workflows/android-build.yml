@@ -18,6 +18,14 @@ jobs:
         distribution: 'zulu'
         java-version: '17'
 
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install Project Dependencies
+      run: npm install
+
     - name: Make Gradle script executable
       working-directory: android
       run: chmod +x gradlew
