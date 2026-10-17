@@ -18,11 +18,11 @@ jobs:
       with:
         python-version: '3.10'
 
+     Tar Run Setup Script
     - name: Install Hugging Face CLI
       run: |
         python -m pip install "huggingface_hub[cli]"
 
-     Tar Run Setup Script
     - name: Run Setup Script
       run: |
         chmod +x tools/sd1/setup_venv.sh
@@ -38,7 +38,6 @@ jobs:
         cd tools/sd1
         ./.venv/bin/python export_sd15_to_onnx.py --in ./_cache/sd15 --out ./_out/sd15-onnx
 
-    # NEW FINAL STEP: Package and upload your files to the summary screen
     - name: Upload Finished ONNX Models
       uses: actions/upload-artifact@v4
       with:
