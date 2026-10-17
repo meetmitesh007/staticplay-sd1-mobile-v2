@@ -2,8 +2,8 @@ name: Export SD1.5 to ONNX Pack
 
 on:
   push:
-    branches: [ "master" ] # Automatically starts the script every time you save a change
-  workflow_dispatch: # Keeps the manual button option just in case
+    branches: [ "master" ]
+  workflow_dispatch:
 
 jobs:
   convert-models:
@@ -22,6 +22,12 @@ jobs:
       run: |
         chmod +x tools/sd1/setup_venv.sh
         ./tools/sd1/setup_venv.sh
+
+    # NEW STEP: This downloads the missing model files into the cache folder
+    - name: Download Stable Diffusion 1.5 Models
+      run: |
+        chmod +x tools/sd1/download_sd15.sh
+        ./tools/sd1/download_sd15.sh
 
     - name: Export to ONNX Format
       run: |
