@@ -18,26 +18,30 @@ jobs:
       with:
         python-version: '3.10'
 
-    # NEW STEP: This installs the missing "hf" command-line tool
     - name: Install Hugging Face CLI
       run: |
         python -m pip install "huggingface_hub[cli]"
 
-    # This runs your setup script (installing torch, onnx, etc.)
+     Tar Run Setup Script
     - name: Run Setup Script
       run: |
         chmod +x tools/sd1/setup_venv.sh
         ./tools/sd1/setup_venv.sh
 
-    # This runs your model download script
     - name: Download Stable Diffusion 1.5 Models
       run: |
         chmod +x tools/sd1/download_sd15.sh
         ./tools/sd1/download_sd15.sh
 
-    # This converts the downloaded models to ONNX format
     - name: Export to ONNX Format
       run: |
         cd tools/sd1
         ./.venv/bin/python export_sd15_to_onnx.py --in ./_cache/sd15 --out ./_out/sd15-onnx
+
+    # NEW FINAL STEP: Package and upload your files to the summary screen
+    - name: Upload Finished ONNX Models
+      uses: actions/upload-artifact@v4
+      with:
+        name: my-onnx-model-package
+        path: tools/sd1/_out/sd15-onnx/
         
