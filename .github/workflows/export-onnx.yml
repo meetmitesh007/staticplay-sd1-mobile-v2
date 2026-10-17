@@ -1,0 +1,32 @@
+name: Export SD1.5 to ONNX Pack
+
+on:
+  workflow_dispatch: # Allows you to manually click a button to run this
+
+jobs:
+  convert-models:
+    runs-on: ubuntu-latest # Uses a clean Linux cloud machine provided by GitHub
+
+    steps:
+    # Step 1: Tell the machine to clone your code repository
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # Step 2: Initialize Python 3.10 inside the machine
+    - name: Setup Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    # Step 3: Run your setup script that installs ONNX and Torch
+    - name: Run Setup Script
+      run: |
+        chmod +x tools/sd1/setup_venv.sh
+        ./tools/sd1/setup_venv.sh
+
+    # Step 4: Run your conversion script
+    - name: Export to ONNX Format
+      run: |
+        cd tools/sd1
+        ./.venv/bin/python export_sd15_to_onnx.py --in ./_cache/sd15 --out ./_out/sd15-onnx
+        
